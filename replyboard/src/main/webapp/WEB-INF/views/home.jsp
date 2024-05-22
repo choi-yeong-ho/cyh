@@ -11,7 +11,8 @@
 </head>
 <body>
 <h1>
-	Hello world!  
+	Hello world!
+	이 프로젝트는 이제 깃으로 관리합니다.  
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
