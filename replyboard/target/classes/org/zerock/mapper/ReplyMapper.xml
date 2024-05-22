@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReplyMapper">
+
+	<insert id="insert">
+		insert into tbl_reply(rno, bno, reply, replyer)
+		values(seq_reply.nextval, #{bno}, #{reply}, #{replyer})
+	</insert>
+	
+	<update id="update">
+		update tbl_reply set reply=#{reply}, replyer=#{replyer}, updatedate=sysdate
+		where rno=#{rno}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_reply where rno=#{rno}
+	</delete>
+	
+	<select id="getCount" resultType="_Integer">
+		select count(*) as count from tbl_reply where bno=#{bno}
+	</select>
+		
+	<select id="getList" resultType="org.zerock.domain.ReplyVO">
+		select * from tbl_reply where bno=#{bno} order by rno
+	</select>
+	
+	<select id="get" resultType="org.zerock.domain.ReplyVO">
+		select * from tbl_reply where rno=#{rno}
+	</select>
+	
+	<select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
+		<![CDATA[
+			select *
+			from (
+			    select /*+ INDEX_ASC(tbl_reply TBL_REPLY_PK) */
+			    rownum rn,rno,reply,replyer,replydate,updatedate
+			    from tbl_reply where rownum <= (#{cri.pageNum}*#{cri.amount}) and bno = #{bno}
+			)
+			where rn > (#{cri.pageNum}-1)*#{cri.amount}
+		]]>
+	</select>
+
+</mapper>
